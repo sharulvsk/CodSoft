@@ -1,0 +1,86 @@
+import java.util.Scanner;
+
+public class SimpleChatbot {
+    private static Scanner scanner = new Scanner(System.in);
+
+    public static String getResponse(String input) {
+        String lowerInput = input.toLowerCase();
+
+        if (lowerInput.contains("what is ai")) {
+            return "AI stands for Artificial Intelligence.";
+        } else if (lowerInput.contains("how does ai work?")) {
+            return "AI systems process data and make decisions based on patterns.";
+        } else if (lowerInput.contains("what are the types of ai?")) {
+            return "There are three types of AI: Narrow AI, General AI, and Superintelligent AI.";
+        } else if (lowerInput.contains("what are the applications of ai?")) {
+            return "AI has applications in natural language processing, image recognition, robotics, healthcare, and finance.";
+        } else if (lowerInput.contains("hello")) {
+            return "Hello! How can I assist you?";
+        } else if (lowerInput.contains("how are you")) {
+            return "I'm just a program, but thanks for asking!";
+        } else if (lowerInput.contains("bye")) {
+            return "Goodbye! Have a great day!";
+        } else if (lowerInput.matches(".\\b(\\d+)([+\\-/]\\d+)+\\b.*")) {
+            return "Please enter two numbers and an operator.";
+        } else {
+            return "Sorry, I didn't understand that.";
+        }
+    }
+
+    public static double performCalculation(double num1, double num2, char operator) {
+        switch (operator) {
+            case '+':
+                return num1 + num2;
+            case '-':
+                return num1 - num2;
+            case '*':
+                return num1 * num2;
+            case '/':
+                if (num2 != 0) {
+                    return num1 / num2;
+                } else {
+                    throw new ArithmeticException("Division by zero!");
+                }
+            default:
+                throw new IllegalArgumentException("Invalid operator: " + operator);
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println("Chatbot: Hello! How can I assist you?");
+
+        while (true) {
+            System.out.print("You: ");
+            String userInput = scanner.nextLine().trim();
+
+            if (userInput.equalsIgnoreCase("exit")) {
+                System.out.println("Chatbot: Goodbye! Have a great day!");
+                break;
+            }
+
+            String response = getResponse(userInput);
+            System.out.println("Chatbot: " + response);
+
+            if (response.equals("Please enter two numbers and an operator.")) {
+                System.out.print("You: ");
+                double num1 = scanner.nextDouble();
+                double num2 = scanner.nextDouble();
+                scanner.nextLine(); // Consume newline character
+
+                System.out.print("You: ");
+                char operator = scanner.nextLine().charAt(0);
+
+                try {
+                    double result = performCalculation(num1, num2, operator);
+                    System.out.println("Chatbot: Result: " + result);
+                } catch (ArithmeticException e) {
+                    System.out.println("Chatbot: " + e.getMessage());
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Chatbot: " + e.getMessage());
+                }
+            }
+        }
+
+        scanner.close();
+    }
+}
